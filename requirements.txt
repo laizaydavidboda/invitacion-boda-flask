@@ -4,3 +4,5 @@ Jinja2
 MarkupSafe
 Werkzeug
 gunicorn
+gspread
+oauth2client
