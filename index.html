@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Boda | Laiza & David</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- VARIABLES DE COLORES --- */
+        :root {
+            --primary-color: #8FA290; /* Verde Salvia */
+            --accent-color: #D4AF37;  /* Dorado */
+            --text-color: #4a4a4a;
+            --bg-color: #fdfbf7;      /* Blanco crema muy suave */
+        }
+
+        /* --- ESTILOS GENERALES --- */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Lato', sans-serif;
+            color: var(--text-color);
+            background-color: var(--bg-color);
+            line-height: 1.6;
+            text-align: center;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+        }
+
+        /* --- HERO SECTION (Portada) --- */
+        .hero {
+            height: 100vh;
+            /* REEMPLAZAR URL CON TU PROPIA IMAGEN */
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1519225421980-715cb0202128?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80'); 
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin: 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-top: 10px;
+        }
+
+        /* --- CUENTA REGRESIVA --- */
+        .countdown {
+            padding: 40px 20px;
+            background-color: var(--primary-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        .time-box {
+            text-align: center;
+        }
+        .time-box span {
+            font-size: 2.5rem;
+            font-weight: bold;
+            font-family: 'Playfair Display', serif;
+        }
+        .time-box p { margin: 0; font-size: 0.9rem; text-transform: uppercase; }
+
+        /* --- SECCIONES --- */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        @media (min-width: 768px) {
+            .details-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent-color);
+        }
+
+        /* --- BOTONES/FORMULARIOS --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%; 
+            border: none; 
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            background-color: #c5a028;
+        }
+        
+        input[type="text"], input[type="number"], select, textarea {
+            width: 100%; 
+            padding: 10px; 
+            margin: 5px 0 20px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+        .success-message {
+            background-color: #d4edda; 
+            color: #155724; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 20px;
+        }
+        .error-message {
+            background-color: #f8d7da; 
+            color: #721c24; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 20px;
+        }
+
+        /* --- ITINERARIO ESTILOS --- */
+        .timeline {
+            text-align: left;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 20px;
+            margin-top: 40px;
+        }
+        .timeline-event {
+            position: relative;
+            padding: 10px 0;
+        }
+        .timeline-event::before {
+            content: '•';
+            color: var(--accent-color);
+            font-size: 20px;
+            position: absolute;
+            left: -29px;
+            top: 10px;
+        }
+
+
+        /* --- MAPA --- */
+        iframe {
+            width: 100%;
+            height: 300px;
+            border: 0;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #333;
+            color: #aaa;
+            padding: 20px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hero">
+        <p>¡Nos casamos!</p>
+        <h1>Laiza & David</h1>
+        <p>13 . Junio . 2026</p> 
+    </header>
+
+    <div class="countdown" id="countdown">
+        <div class="time-box"><span id="days">00</span><p>Días</p></div>
+        <div class="time-box"><span id="hours">00</span><p>Horas</p></div>
+        <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
+    </div>
+
+    <div class="container">
+        <h2>La Celebración</h2>
+        <p>Estamos felices de compartir este día tan especial con ustedes. Les pedimos llegar a tiempo para iniciar la ceremonia.</p>
+
+        <div class="details-grid">
+            <div class="card">
+                <h3>💍 Ceremonia</h3>
+                <p><strong>5:00 PM</strong></p>
+                <p>La Cayetana</p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <br>
+                <a href="https://goo.gl/maps/tulink-ceremonia" target="_blank" style="color: var(--primary-color); font-weight:bold;">Vínculo Google Maps</a>
+            </div>
+
+            <div class="card">
+                <h3>🥂 Recepción</h3>
+                <p><strong>7:30 PM</strong></p>
+                <p>Salón de Eventos "La Cayetana"</p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <br>
+                <a href="https://goo.gl/maps/tulink-recepcion" target="_blank" style="color: var(--primary-color); font-weight:bold;">Vínculo Google Maps</a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container" style="background-color: white; border-radius: 10px; margin-top: 0;">
+        <h2>Itinerario del Día</h2>
+        <div class="timeline">
+            <div class="timeline-event">
+                <p><strong>4:45 PM:</strong> Tomar su lugar, inicio de la bienvenida</p>
+            </div>
+             <div class="timeline-event">
+                <p><strong>5:00 PM:</strong> Inicio de la ceremonia</p>
+            </div>
+            <div class="timeline-event">
+                <p><strong>6:00 PM:</strong> Cóctel de bienvenida</p>
+            </div>
+            <div class="timeline-event">
+                <p><strong>7:30 PM:</strong> Recepción y Cena</p>
+            </div>
+            <div class="timeline-event">
+                <p><strong>1:00 AM:</strong> Fin del Evento</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Reglas y Detalles Importantes</h2>
+        
+        <div style="display: flex; justify-content: space-around; flex-wrap: wrap;">
+            
+            <div style="flex: 1; min-width: 250px; padding: 10px;">
+                <h3>👗 Código de Vestimenta</h3>
+                <p>Formal / Etiqueta Rigurosa.</p>
+                <p style="font-size: 0.9rem; color: #777;">*Reservado el color blanco para la novia.</p>
+                
+                <h3 style="margin-top: 30px;">📵 Solicitudes</h3>
+                <p>Agradeceremos su colaboración con lo siguiente:</p>
+                <ul style="list-style: none; padding: 0; text-align: center;">
+                    <li>— Evento solo para **adultos**.</li>
+                    <li>— **Ceremonia sin teléfonos:** No saques tu teléfono en la ceremonia.</li>
+                    <li>— **Pocas fotos:** Disfrutemos el momento sin distracciones.</li>
+                </ul>
+            </div>
+            
+            <div style="flex: 1; min-width: 250px; padding: 10px;">
+                <h3>🎁 Mesa de Regalos</h3>
+                <p>Su presencia es nuestro mejor regalo.</p>
+                <p>Si desean tener un detalle, pueden hacerlo a través de las siguientes opciones:</p>
+                <ul style="list-style: none; padding: 0; text-align: center;">
+                    <li>**Amazon:** [Vínculo a la mesa de Amazon]</li>
+                    <li>**Liverpool:** [Vínculo a la mesa de Liverpool]</li>
+                </ul>
+
+                <h3 style="margin-top: 30px;">🏦 Regalos Cuenta Bancaria</h3>
+                <p>Agradecemos cualquier aporte a nuestra nueva vida juntos:</p>
+                <p><strong>Banco:</strong> [Nombre del Banco]<br>
+                <strong>Cuenta CLABE:</strong> [Número CLABE completo]</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="background-color: #f4f4f4; padding: 60px 20px;" id="rsvp">
+        <h2>Confirmación de Asistencia</h2>
+        
+        {% if validation.success %}
+            <div class="success-message">
+                <h3>¡Gracias {{ validation.nombre_invitado }}!</h3>
+                <p>Tu asistencia ha sido confirmada. ¡Te esperamos!</p>
+            </div>
+        {% elif validation.error %}
+            <div class="error-message">
+                <h3>⚠️ Error de Confirmación</h3>
+                <p>{{ validation.error }}</p>
+            </div>
+        {% endif %}
+        
+        {% if not validation.success %}
+            <p>Por favor confírmanos antes del 1 de Febrero llenando este formulario:</p>
+            
+            <form action="/rsvp" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
+                <label for="nombre">Nombre Completo (como aparece en la invitación):</label>
+                <input type="text" id="nombre" name="nombre" required>
+
+                <label for="asistentes">Número de Personas que Asistirán:</label>
+                <input type="number" id="asistentes" name="asistentes" min="1" max="10" required style="width: 100%; padding: 10px; margin: 5px 0 20px 0; border: 1px solid #ccc; border-radius: 4px;">
+
+                <label for="mensaje">Mensaje para los novios (Opcional):</label>
+                <textarea id="mensaje" name="mensaje" rows="4"></textarea>
+
+                <button type="submit" class="btn">Enviar Confirmación</button>
+            </form>
+        {% endif %}
+    </div>
+
+    <footer>
+        <p>Hecho con ❤️ para nuestra boda - 2025</p>
+    </footer>
+
+    <script>
+        // CONFIGURA AQUÍ LA FECHA DE TU BODA (Año, Mes (0-11), Día, Hora, Minuto)
+        // Junio es el mes 5 (0=Enero, 5=Junio)
+        const weddingDate = new Date(2026, 5, 13, 18, 0, 0).getTime();
+
+        const timer = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = weddingDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+
+            const daysElement = document.getElementById("days");
+            const hoursElement = document.getElementById("hours");
+            const minutesElement = document.getElementById("minutes");
+            
+            if (daysElement && hoursElement && minutesElement) {
+                daysElement.innerText = days;
+                hoursElement.innerText = hours;
+                minutesElement.innerText = minutes;
+            }
+
+            if (distance < 0) {
+                clearInterval(timer);
+                const countdownElement = document.getElementById("countdown");
+                if(countdownElement) {
+                    countdownElement.innerHTML = "<h2>¡Es hoy!</h2>";
+                }
+            }
+        }, 1000);
+    </script>
+
+</body>
+</html>
