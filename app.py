@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import csv
 import os
 from datetime import datetime
+import json
 # Librerías para Google Sheets
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
@@ -15,8 +16,6 @@ DB_CONFIRMADOS = 'invitados.csv'
 DB_MAESTRA = 'lista_maestra.csv'
 
 # --- CONFIGURACIÓN DE GOOGLE SHEETS (DEBES MODIFICAR ESTO) ---
-# Nombre del archivo JSON que contiene la clave de la Cuenta de Servicio
-GOOGLE_KEY_FILE = 'service_account_key.json' 
 # Nombre de tu Hoja de Cálculo (el nombre que le diste en Google Drive)
 SHEET_NAME = 'Lista de Invitados Boda Laiza y David'
 # Nombre de la Pestaña dentro de la hoja (normalmente 'Hoja1' o 'Confirmados')
@@ -28,7 +27,7 @@ def cargar_lista_maestra():
     """Carga el CSV de la lista maestra para la validación de boletos."""
     maestra = {}
     try:
-        # El archivo lista_maestra.csv debe existir en la misma carpeta que app.py
+        # Nota: El archivo lista_maestra.csv debe estar en la raíz del proyecto en Render/GitHub.
         with open(DB_MAESTRA, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             for row in reader:
@@ -50,31 +49,34 @@ def init_db():
             writer = csv.writer(file)
             writer.writerow(['Fecha', 'Nombre', 'Asistentes', 'Mensaje'])
 
-# --- FUNCIÓN DE GOOGLE SHEETS ---
+# --- FUNCIÓN DE GOOGLE SHEETS (Segura con Variables de Entorno) ---
 
 def guardar_en_sheets(datos):
     """Guarda una fila de datos en la hoja de cálculo de Google."""
     try:
-        # 1. Autenticación usando el archivo JSON de la cuenta de servicio
+        # 1. Autenticación usando la Variable de Entorno de Render
+        # El contenido JSON de la clave se obtiene de la variable 'GOOGLE_SERVICE_ACCOUNT_JSON'
+        creds_json = json.loads(os.environ.get('GOOGLE_SERVICE_ACCOUNT_JSON'))
         scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
-        # El archivo service_account_key.json debe estar en la raíz del proyecto
-        creds = ServiceAccountCredentials.from_json_keyfile_name(GOOGLE_KEY_FILE, scope)
+        
+        # 2. Cargar las credenciales desde el diccionario JSON (SEGURO)
+        creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_json, scope)
         client = gspread.authorize(creds)
         
-        # 2. Abrir la hoja de cálculo y la pestaña
+        # 3. Abrir la hoja de cálculo y la pestaña
         sheet = client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
         
-        # 3. Insertar la fila de datos
+        # 4. Insertar la fila de datos
         sheet.append_row(datos)
         print("Datos guardados exitosamente en Google Sheets.")
         
-    except FileNotFoundError:
-        print(f"ERROR CRÍTICO: Archivo de clave JSON no encontrado: {GOOGLE_KEY_FILE}")
+    except TypeError:
+        # Se lanza si la variable de entorno (GOOGLE_SERVICE_ACCOUNT_JSON) no está configurada en Render
+        print("ERROR CRÍTICO: La variable de entorno 'GOOGLE_SERVICE_ACCOUNT_JSON' no está configurada o está vacía.")
     except gspread.exceptions.SpreadsheetNotFound:
-        print(f"ERROR CRÍTICO: Hoja de cálculo '{SHEET_NAME}' no encontrada. Verifique el nombre en Google Drive.")
+        print(f"ERROR CRÍTICO: Hoja de cálculo '{SHEET_NAME}' no encontrada. Verifique el nombre y permisos.")
     except Exception as e:
         print(f"ERROR al guardar en Google Sheets: {e}")
-        # En caso de error, la aplicación sigue funcionando (solo falla el guardado remoto)
         pass
 
 
@@ -105,7 +107,7 @@ def rsvp():
     if asistentes_form > asignados_permitidos:
         return render_template('index.html', validation={'error': f'Solo tiene asignados {asignados_permitidos} lugares. Por favor, ajuste la cantidad.'})
     
-    # Chequeo de duplicados
+    # Chequeo de duplicados (simple)
     init_db()
     with open(DB_CONFIRMADOS, mode='r', encoding='utf-8') as file:
         reader = csv.DictReader(file)
