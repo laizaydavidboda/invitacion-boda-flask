@@ -32,15 +32,21 @@
             color: var(--primary-color);
         }
 
-/* --- HERO SECTION (Portada) --- */
-.hero {
-    height: 100vh;
-   
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://drive.google.com/uc?export=view&id=1DC-zyduD760Ze3IB_OSMY3hx7QylvSGG');
-    background-size: cover;
-    background-position: center;
-
-}
+        /* --- HERO SECTION (Portada) --- */
+        .hero {
+            height: 100vh;
+            /* URL DE GOOGLE DRIVE - VERIFICADA */
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://drive.google.com/uc?export=view&id=1DC-zyduD760Ze3IB_OSMY3hx7QylvSGG');
+            background-size: cover;
+            background-position: center;
+            /* Aseguramos que el contenido dentro del hero se centre */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white; /* Asegura que el texto sea visible sobre el fondo oscuro */
+            padding: 20px;
+        }
 
         .hero h1 {
             font-size: 4rem;
@@ -83,15 +89,12 @@
             padding: 60px 20px;
         }
 
+        /* Cambiado de grid a flexbox para centrar una sola tarjeta */
         .details-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+            display: flex;
+            justify-content: center; /* Centra horizontalmente la tarjeta */
             gap: 40px;
             margin-top: 30px;
-        }
-
-        @media (min-width: 768px) {
-            .details-grid { grid-template-columns: 1fr 1fr; }
         }
 
         .card {
@@ -100,6 +103,8 @@
             border-radius: 8px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
             border-top: 4px solid var(--accent-color);
+            max-width: 400px; /* Limita el ancho de la tarjeta para centrarla bien en escritorio */
+            width: 100%; /* Asegura que ocupe todo el espacio disponible en móvil */
         }
 
         /* --- BOTONES/FORMULARIOS --- */
@@ -194,34 +199,40 @@
 </head>
 <body>
 
+    <!-- SECCIÓN 1: PORTADA (Fecha y Hora) -->
     <header class="hero">
         <p>¡Nos casamos!</p>
         <h1>Laiza & David</h1>
         <p>13 . Junio . 2026</p> 
     </header>
 
+    <!-- CUENTA REGRESIVA -->
     <div class="countdown" id="countdown">
         <div class="time-box"><span id="days">00</span><p>Días</p></div>
         <div class="time-box"><span id="hours">00</span><p>Horas</p></div>
         <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
     </div>
 
+    <!-- SECCIÓN 2: DETALLES Y UBICACIÓN (Un solo lugar) -->
     <div class="container">
         <h2>La Celebración</h2>
-        <p>Estamos felices de compartir este día tan especial con ustedes. Les pedimos llegar a tiempo para iniciar la ceremonia.</p>
+        <p>Toda la celebración se llevará a cabo en el mismo lugar. Les pedimos llegar a tiempo para iniciar la ceremonia.</p>
 
         <div class="details-grid">
+            <!-- TARJETA ÚNICA DE UBICACIÓN Y MAPA -->
             <div class="card">
-                <h3>💍 Ceremonia</h3>
-                <p><strong>5:00 PM</strong></p>
-                <p>La Cayetana</p>
+                <h3>📍 Ceremonia y Recepción</h3>
+                <p><strong>Hora de Inicio:</strong> 5:00 PM</p>
+                <p>La Cayetana, Chihuahua.</p>
+                <!-- MAPA CENTRADO -->
                 <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                 <br>
-                <a href="https://goo.gl/maps/tulink-ceremonia" target="_blank" style="color: var(--primary-color); font-weight:bold;">Vínculo Google Maps</a>
+                <a href="https://goo.gl/maps/tulink-lugar" target="_blank" style="color: var(--primary-color); font-weight:bold;">Vínculo Google Maps</a>
             </div>
         </div>
     </div>
     
+    <!-- SECCIÓN 3: ITINERARIO (Agenda detallada) -->
     <div class="container" style="background-color: white; border-radius: 10px; margin-top: 0;">
         <h2>Itinerario del Día</h2>
         <div class="timeline">
@@ -243,6 +254,7 @@
         </div>
     </div>
 
+    <!-- SECCIÓN 4: REGLAS Y REGALOS (No niños, No teléfono, Mesa de Regalos) -->
     <div class="container">
         <h2>Reglas y Detalles Importantes</h2>
         
@@ -256,9 +268,9 @@
                 <h3 style="margin-top: 30px;">📵 Solicitudes</h3>
                 <p>Agradeceremos su colaboración con lo siguiente:</p>
                 <ul style="list-style: none; padding: 0; text-align: center;">
-                    <li>— Evento solo para adultos.</li>
-                    <li>— Ceremonia sin teléfonos: No saques tu teléfono en la ceremonia.</li>
-                    <li>— Pocas fotos: Disfrutemos el momento sin distracciones.</li>
+                    <li>— Evento solo para **adultos**.</li>
+                    <li>— **Ceremonia sin teléfonos:** No saques tu teléfono en la ceremonia.</li>
+                    <li>— **Pocas fotos:** Disfrutemos el momento sin distracciones.</li>
                 </ul>
             </div>
             
@@ -279,6 +291,7 @@
         </div>
     </div>
 
+    <!-- SECCIÓN 5: RSVP (Confirmar asistencia con validación de boletos) -->
     <div style="background-color: #f4f4f4; padding: 60px 20px;" id="rsvp">
         <h2>Confirmación de Asistencia</h2>
         
@@ -316,6 +329,7 @@
         <p>13 de junio del 2026</p>
     </footer>
 
+    <!-- SCRIPT DE LA CUENTA REGRESIVA -->
     <script>
         // CONFIGURA AQUÍ LA FECHA DE TU BODA (Año, Mes (0-11), Día, Hora, Minuto)
         // Junio es el mes 5 (0=Enero, 5=Junio)
@@ -351,5 +365,3 @@
 
 </body>
 </html>
-
-
