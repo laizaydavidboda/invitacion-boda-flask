@@ -11,14 +11,14 @@ app.secret_key = 'clave_secreta_laizaydavid'
 
 # --- CONFIGURACIÓN DE ARCHIVOS ---
 DB_CONFIRMADOS = 'invitados.csv'
-DB_MAESTRA = 'lista_maestra_flexible.csv' 
+DB_MAESTRA = 'lista_maestra_flexible.csv' # ¡NOMBRE FINAL DEL ARCHIVO!
 DB_CONFIRMADOS_CHECK = 'confirmados_check.csv' 
 
 # --- CONFIGURACIÓN DE FECHAS Y FASES (¡AJUSTA ESTAS FECHAS!) ---
 # Las fechas deben ser objetos datetime
-FECHA_DE_CORTE_ETAPA_1 = datetime(2026, 1, 15) # Ejemplo: Hasta el 15 de Enero de 2026
-FECHA_DE_CORTE_ETAPA_2 = datetime(2026, 3, 15) # Ejemplo: Hasta el 15 de Marzo de 2026
-# Si la fecha actual es posterior a la última fecha de corte, solo BASE confirma.
+FECHA_DE_CORTE_ETAPA_1 = datetime(2026, 1, 15) # Ejemplo: Si es hoy o antes, se abre ETAPA 1
+FECHA_DE_CORTE_ETAPA_2 = datetime(2026, 3, 15) # Ejemplo: Si es hoy o antes, se abre ETAPA 2
+# Si la fecha actual es posterior a la última fecha de corte, solo BASE puede confirmar.
 
 # --- CONFIGURACIÓN DE GOOGLE SHEETS ---
 SHEET_NAME = 'Lista de Invitados Boda Laiza y David'
@@ -48,6 +48,7 @@ def cargar_lista_maestra():
     nombres_a_id = {}
     
     try:
+        # Nota: El archivo lista_maestra_flexible.csv debe tener 4 columnas: ID_Familia, Nombre_Invitado, Asignados, Fase
         with open(DB_MAESTRA, mode='r', encoding='utf-8') as file:
             reader = csv.DictReader(file)
             
@@ -55,7 +56,11 @@ def cargar_lista_maestra():
                 id_familia = row['ID_Familia'].strip()
                 invitado = row['Nombre_Invitado'].strip()
                 asignados = int(row['Asignados'].strip())
-                fase = row.get('Fase', 'BASE').strip() # Aseguramos que la columna 'Fase' exista
+                fase = row['Fase'].strip() # Leemos la columna Fase
+
+                # Validación de Fases: Si la fase no es BASE, debe ser ETAPA 1, 2 o 3
+                if fase not in ['BASE', 'ETAPA 1', 'ETAPA 2', 'ETAPA 3']:
+                    fase = 'BASE' # Default de seguridad
                 
                 if id_familia not in lista_detallada:
                     lista_detallada[id_familia] = []
@@ -63,7 +68,7 @@ def cargar_lista_maestra():
                 lista_detallada[id_familia].append({
                     'nombre': invitado, 
                     'asignados': asignados,
-                    'fase': fase # Agregamos la fase al miembro
+                    'fase': fase 
                 })
                 
                 nombres_a_id[invitado] = id_familia 
@@ -101,7 +106,7 @@ def esta_confirmado(id_familia):
     except FileNotFoundError:
         return False
 
-# --- FUNCIÓN DE GOOGLE SHEETS ---
+# --- FUNCIÓN DE GOOGLE SHEETS (Segura con Variables de Entorno) ---
 
 def guardar_en_sheets(datos):
     """Guarda una fila de datos en la hoja de cálculo de Google."""
@@ -133,7 +138,7 @@ def rsvp_controller():
     """Controla el flujo: 1. Busca el invitado y carga la familia o 2. Procesa la confirmación."""
     
     lista_detallada, nombres_a_id = cargar_lista_maestra()
-    fase_actual = obtener_fase_actual()
+    fase_actual_str = obtener_fase_actual() # String: 'ETAPA 1', 'ETAPA 2', 'ETAPA 3'
     
     if 'invitado_search' in request.form:
         # --- PASO 1: BUSCAR INVITADO (Formulario de portada) ---
@@ -145,6 +150,8 @@ def rsvp_controller():
                                    family_members=[], current_id='')
 
         id_familia_encontrado = nombres_a_id[invitado_search]
+        members = lista_detallada[id_familia_encontrado]
+        familia_fase = members[0].get('fase', 'BASE') 
         
         # 1. Chequea si la familia ya confirmó (Duplicado)
         if esta_confirmado(id_familia_encontrado):
@@ -152,20 +159,35 @@ def rsvp_controller():
                                    validation={'error': f'La confirmación de su grupo ya fue registrada. Si necesita cambiar sus datos, contacte a los novios.'},
                                    family_members=[], current_id='')
 
+
         # 2. LÓGICA DE FASES Y FECHAS DE CORTE
-        members = lista_detallada[id_familia_encontrado]
-        familia_fase = members[0].get('fase', 'BASE') # Asume que todos los miembros tienen la misma fase
         
-        # Si no es fase BASE (siempre abierta) Y la fase de la familia es posterior a la fase actual
-        if familia_fase != 'BASE' and familia_fase > fase_actual:
+        # Las fases se comparan directamente como strings: 'ETAPA 1' < 'ETAPA 2' < 'ETAPA 3'
+        
+        # Si NO es fase BASE (la cual siempre está abierta) Y la fase de la familia es posterior a la fase actual
+        # Ejemplo: Si estamos en ETAPA 1 (fase_actual) y la familia es ETAPA 2 (familia_fase). 
+        # Python compara alfabéticamente, lo cual funciona aquí si usamos ETAPA 1, ETAPA 2, etc.
+        
+        if familia_fase != 'BASE' and familia_fase > fase_actual_str:
+            
+            # Mensajes de error personalizados para guiar al usuario
+            if familia_fase == 'ETAPA 2' and fase_actual_str == 'ETAPA 1':
+                 fecha_corte = FECHA_DE_CORTE_ETAPA_1.strftime("%d de %B")
+                 msg = f'Su invitación es para la ETAPA 2. Por favor, intente de nuevo después del {fecha_corte}.'
+            elif familia_fase == 'ETAPA 3' and fase_actual_str in ['ETAPA 1', 'ETAPA 2']:
+                 fecha_corte = FECHA_DE_CORTE_ETAPA_2.strftime("%d de %B")
+                 msg = f'Su invitación es para la ETAPA 3. Por favor, intente de nuevo después del {fecha_corte}.'
+            else:
+                 msg = 'Su invitación aún no está activa. Consulte su invitación física para la fecha de corte.'
+
             return render_template('index.html', 
-                                   validation={'error': f'Su invitación ({familia_fase}) aún no está activa. Por favor, intente de nuevo después del {FECHA_DE_CORTE_ETAPA_1.strftime("%d de %B")} (Etapa 2) o {FECHA_DE_CORTE_ETAPA_2.strftime("%d de %B")} (Etapa 3).'},
+                                   validation={'error': msg},
                                    family_members=[], current_id='')
 
         # 3. Si es válido (Base siempre abierto, o Etapa activa)
         return render_template('index.html', 
                                validation={},
-                               confirmador_name=invitado_search,
+                               confirmador_name=invitado_search, 
                                current_id=id_familia_encontrado,
                                family_members=members)
 
@@ -179,7 +201,7 @@ def rsvp_controller():
         if esta_confirmado(id_familia):
             return redirect(url_for('home'))
 
-        # PROCESO DE GUARDADO (Mismo que antes)
+        # PROCESO DE GUARDADO
         asistentes_confirmados = 0
         total_a_guardar = []
         
@@ -194,10 +216,6 @@ def rsvp_controller():
                 fila = [fecha_actual, id_familia, guest_name, asistencia_status, mensaje, confirmador_quien_escribio]
                 total_a_guardar.append(fila)
         
-        if asistentes_confirmados == 0:
-             # Permite guardar la confirmación con 0 asistentes (declina todo el grupo)
-             pass 
-
         # Guardar en CSV Local y Google Sheets para cada miembro
         init_db()
         for fila in total_a_guardar:
