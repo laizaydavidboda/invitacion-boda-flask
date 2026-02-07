@@ -294,7 +294,7 @@
         {% elif validation.error %}
             <!-- Estado 2: Error (Muestra el mensaje de error y luego el formulario de búsqueda de familia) -->
             <div class="error-message">
-                <h3>⚠️ Error de Confirmación</h3>
+                <h3>Error de Confirmación</h3>
                 <p>{{ validation.error }}</p>
             </div>
         {% endif %}
@@ -302,7 +302,7 @@
         
         <!-- Estado 3: Formulario Principal de Búsqueda (si no hay miembros cargados) -->
         {% if family_members|length == 0 and not validation.success %}
-            <p>Por favor, ingrese **cualquier nombre** que aparezca en su invitación para cargar su grupo familiar.</p>
+            <p>Por favor, ingrese cualquier nombre en mayusculas que aparezca en su invitación para cargar su grupo familiar.</p>
             
             <form action="/rsvp" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
                 <label for="invitado_search">Tu Nombre (como aparece en la invitación):</label>
@@ -399,6 +399,7 @@
 
 </body>
 </html>
+
 
 
 
