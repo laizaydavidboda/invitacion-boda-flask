@@ -114,38 +114,42 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
-        /* --- FORMULARIO RSVP --- */
-        .rsvp-section { background-color: #f4f4f4; padding: 60px 20px; }
-        
-        .btn {
-            background-color: var(--accent-color);
-            color: white;
-            padding: 16px 30px;
-            border-radius: 50px;
-            border: none;
-            cursor: pointer;
-            text-transform: uppercase;
-            font-weight: bold;
+        /* --- RSVP SECTION (Ajustes de Centrado) --- */
+        .rsvp-section {
+            background-color: #f4f4f4; 
+            padding: 80px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centra el contenido horizontalmente */
+            text-align: center;
+        }
+
+        .rsvp-section form {
             width: 100%;
-            max-width: 300px;
-            margin-top: 20px;
+            max-width: 500px; /* Ancho máximo para el formulario */
+            margin: 0 auto;
+            text-align: center; /* Centra los textos dentro del form */
         }
 
-        input[type="text"], textarea, select { 
-            width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;
+        .rsvp-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
         }
 
-        iframe { width: 100%; height: 250px; border-radius: 8px; margin-top: 15px; border:0; }
+        .rsvp-table th {
+            padding: 10px 0;
+            text-align: center; /* Títulos de tabla centrados */
+        }
 
-        footer { background-color: #222; color: #888; padding: 30px 20px; font-size: 0.8rem; text-align: center; }
-
-        @media (max-width: 480px) {
-            .hero { padding-top: 20dvh; }
-            .hero h1 { font-size: 2.8rem; }
+        .rsvp-table td {
+            padding: 15px 0;
+            text-align: center; /* Datos de tabla centrados */
         }
     </style>
 </head>
 <body>
+
 
     <header class="hero">
         <p>¡Nos casamos!</p>
@@ -297,6 +301,7 @@
     </script>
 </body>
 </html>
+
 
 
 
