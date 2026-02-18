@@ -15,11 +15,10 @@
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root {
-            --primary-color: #8FA290; /* Verde Salvia */
+            --primary-color: #97B6E5; /* AZUL */
             --accent-color: #D4AF37;  /* Dorado */
-            --title-blue: #8ba8d9;    /* Azul suave */
-            --text-color: #333333;
-            --bg-color: #fdfbf7;      /* Crema claro */
+            --text-color: #4a4a4a;
+            --bg-color: #fdfbf7;      /* Blanco crema muy suave */
         }
 
         body {
@@ -96,21 +95,6 @@
             border-top: 4px solid var(--accent-color);
             margin-top: 20px;
         }
-
-        /* --- ITINERARIO --- */
-        .timeline {
-            text-align: left;
-            border-left: 3px solid var(--primary-color);
-            padding-left: 20px;
-            margin: 30px auto;
-            max-width: 500px;
-        }
-        .timeline-event { position: relative; padding: 10px 0; }
-        .timeline-event::before {
-            content: '•'; color: var(--accent-color); font-size: 24px;
-            position: absolute; left: -29px; top: 6px;
-        }
-
         /* --- REGLAS Y REGALOS (ESTILO IMAGEN) --- */
         .info-section {
             max-width: 600px;
@@ -175,28 +159,24 @@
         <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
     </div>
 
-    <!-- SECCIÓN: CELEBRACIÓN -->
+    <!-- SECCIÓN 2: DETALLES Y UBICACIÓN -->
     <div class="container">
         <h2>La Celebración</h2>
-        <div class="card">
-            <h3>📍 Lugar y Horario</h3>
-            <p>La Cayetana, Chihuahua.</p>
-            <p><strong>Ceremonia:</strong> 5:00 PM</p>
-            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx"></iframe>
+        <p>La totalidad de nuestro evento será en La Cayetana.</p>
+
+        <div class="details-grid">
+            <div class="card">
+                <h3>Ceremonia y Recepción</h3>
+                <p><strong>Boda religiosa:</strong> 7:00 PM</p>
+                <p><strong>Recepción:</strong> 8:00 PM - 1:00 AM</p>
+                <p>La Cayetana, Chihuahua.</p>
+                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
+                <br><br>
+                <a href="https://goo.gl/maps/tulink-lugar" target="_blank" style="color: var(--primary-color); font-weight:bold; text-decoration: none;">Vínculo Google Maps</a>
+            </div>
         </div>
     </div>
-
-    <!-- SECCIÓN: ITINERARIO -->
-    <div class="container" style="background: white;">
-        <h2>Itinerario</h2>
-        <div class="timeline">
-            <div class="timeline-event"><p><strong>4:45 PM:</strong> Bienvenida</p></div>
-            <div class="timeline-event"><p><strong>5:00 PM:</strong> Ceremonia</p></div>
-            <div class="timeline-event"><p><strong>6:00 PM:</strong> Cóctel</p></div>
-            <div class="timeline-event"><p><strong>7:30 PM:</strong> Cena y Baile</p></div>
-        </div>
-    </div>
-
+    
     <!-- SECCIÓN: REGLAS Y REGALOS -->
     <div class="info-section">
         <div class="info-title">Código de Vestimenta</div>
@@ -231,39 +211,73 @@
         </div>
     </div>
 
-    <!-- SECCIÓN: RSVP -->
-        <section class="rsvp-section" id="rsvp">
+    <!-- SECCIÓN 5: RSVP -->
+    <section class="rsvp-section" id="rsvp">
         <h2>Confirmación de Asistencia</h2>
+        
         {% if validation.success %}
-            <div style="background:#d4edda; padding:20px; border-radius:12px; max-width:500px; margin:0 auto;">
-                <p>¡Gracias! Confirmación recibida.</p>
+            <div class="success-message">
+                <h3>¡Gracias {{ validation.nombre_invitado }}!</h3>
+                <p>Tu asistencia y la de tus acompañantes han sido confirmadas. ¡Te esperamos!</p>
             </div>
-        {% else %}
-            {% if family_members|length == 0 %}
-                <form action="/rsvp" method="POST" style="max-width:400px; margin:0 auto;">
-                    <input type="text" name="invitado_search" placeholder="Tu nombre completo" required>
-                    <button type="submit" class="btn">Buscar Invitación</button>
-                </form>
-            {% else %}
-                <form action="/rsvp" method="POST" style="max-width:450px; margin:0 auto; background:white; padding:30px; border-radius:12px;">
-                    <input type="hidden" name="id_familia_hidden" value="{{ current_id }}">
-                    {% for member in family_members %}
-                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
-                        <span>{{ member.nombre }}</span>
-                        <select name="asistencia_{{ member.nombre|replace(' ', '_') }}">
-                            <option value="Si">Sí</option>
-                            <option value="No">No</option>
-                        </select>
-                    </div>
-                    {% endfor %}
-                    <input type="text" name="confirmador_quien_escribio" placeholder="¿Quién confirma?" required style="margin-top:20px;">
-                    <textarea name="mensaje" rows="2" placeholder="Mensaje opcional"></textarea>
-                    <button type="submit" class="btn">Confirmar</button>
-                </form>
-            {% endif %}
+        {% elif validation.error %}
+            <div class="error-message">
+                <h3>Error de Confirmación</h3>
+                <p>{{ validation.error }}</p>
+            </div>
         {% endif %}
-    </div>
+        
+        {% if family_members|length == 0 and not validation.success %}
+            <p style="max-width: 600px; margin: 0 auto 30px;">Por favor, ingrese cualquier nombre en MAYÚSCULAS que aparezca en su invitación para cargar su grupo familiar.</p>
+            
+            <form action="/rsvp" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
+                <label for="invitado_search">Tu Nombre (como aparece en la invitación):</label>
+                <input type="text" id="invitado_search" name="invitado_search" required placeholder="EJ: JUAN PEREZ">
+                <button type="submit" class="btn">Buscar Grupo Familiar</button>
+            </form>
+        
+        {% elif family_members|length > 0 %}
+            <h3 style="color: var(--primary-color); margin-bottom: 15px;">Confirmación de Asistencia Familiar</h3>
+            <p style="margin-bottom: 25px;">Por favor, seleccione 'Sí' o 'No' para cada uno de los miembros. Un solo miembro puede confirmar a todo el grupo.</p>
+            
+            <form action="/rsvp" method="POST" style="max-width: 500px; margin: 0 auto; text-align: left; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+                <input type="hidden" name="id_familia_hidden" value="{{ current_id }}">
+                
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                    <thead>
+                        <tr style="border-bottom: 2px solid var(--primary-color);">
+                            <th style="padding: 10px 0; text-align: left;">Invitado</th>
+                            <th style="padding: 10px 0; text-align: center;">Asistencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for member in family_members %}
+                        <tr style="border-bottom: 1px solid #eee;">
+                            <td style="padding: 15px 0;">
+                                <span style="font-weight: bold;">{{ member.nombre }}</span>
+                                <span style="display: block; font-size: 0.8rem; color: #888;">({{ member.asignados }} asiento(s) asignado(s))</span>
+                            </td>
+                            <td style="padding: 15px 0; text-align: center;">
+                                <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0;">
+                                    <option value="Si" selected>Sí</option>
+                                    <option value="No">No</option>
+                                </select>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
+                <label for="confirmador_quien_escribio">Tu Nombre Completo (de quien está confirmando):</label>
+                <input type="text" id="confirmador_quien_escribio" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
+
+                <label for="mensaje">Mensaje para los novios (Opcional):</label>
+                <textarea id="mensaje" name="mensaje" rows="4"></textarea>
+
+                <button type="submit" class="btn">Enviar Confirmación Final</button>
+            </form>
+        {% endif %}
+    </section>
     <footer>
         <p>13 de Junio de 2026 | Laiza & David</p>
     </footer>
@@ -283,5 +297,6 @@
     </script>
 </body>
 </html>
+
 
 
