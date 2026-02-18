@@ -11,13 +11,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* --- RESET Y OPTIMIZACIÓN --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* --- RESET --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root {
             --primary-color: #8FA290; /* Verde Salvia */
@@ -32,25 +27,24 @@
             color: var(--text-color);
             background-color: var(--bg-color);
             line-height: 1.6;
-            overflow-x: hidden; /* Evita scroll horizontal */
+            overflow-x: hidden;
         }
 
-        h1, h2, h3 {
-            font-family: 'Playfair Display', serif;
-        }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
-        /* --- PORTADA (HERO) OPTIMIZADA --- */
+        /* --- PORTADA (HERO) --- */
         .hero {
-            height: 100vh; /* Fallback */
-            height: 100dvh; /* Altura dinámica para móviles modernos */
+            height: 100vh;
+            height: 100dvh;
+            /* CORRECCIÓN DE URL Y SINTAXIS */
             background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), 
-                 url('https://i.imgur.com/a8xAcmN.jpeg');
+                        url('https://i.imgur.com/a8xAcmN.jpeg');
             background-size: cover;
-            background-position: center 30%; /* Ajuste para que se vean mejor las caras si es necesario */
+            background-position: center 30%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding-top: 25dvh; /* Posición exacta del texto */
+            padding-top: 25dvh; /* Texto movido hacia abajo */
             align-items: center;
             color: white;
             text-align: center;
@@ -59,7 +53,7 @@
         }
 
         .hero h1 { 
-            font-size: clamp(2.5rem, 10vw, 4rem); /* Tamaño fluido: se encoge en pantallas pequeñas */
+            font-size: clamp(2.5rem, 10vw, 4rem); 
             margin: 0.5rem 0;
             color: white; 
             text-shadow: 2px 2px 8px rgba(0,0,0,0.6); 
@@ -81,102 +75,89 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            max-width: 100%;
+            text-align: center;
         }
-        .time-box span { font-size: 2rem; font-weight: bold; font-family: 'Playfair Display', serif; display: block; }
-        .time-box p { margin: 0; font-size: 0.8rem; text-transform: uppercase; opacity: 0.9; }
+        .time-box span { font-size: 2rem; font-weight: bold; display: block; }
+        .time-box p { font-size: 0.7rem; text-transform: uppercase; }
 
-        /* --- SECCIÓN REGLAS Y REGALOS --- */
-        .info-section {
-            max-width: 600px;
+        /* --- SECCIONES CONTENEDORAS --- */
+        .container {
+            max-width: 800px;
             margin: 0 auto;
             padding: 60px 20px;
             text-align: center;
         }
 
-        .info-title {
-            color: var(--title-blue);
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 8px;
-            margin-top: 45px;
-            text-transform: none;
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border-top: 4px solid var(--accent-color);
+            margin-top: 20px;
         }
 
-        .info-text {
-            font-size: 1.05rem;
-            margin-bottom: 15px;
-            color: #555;
+        /* --- ITINERARIO --- */
+        .timeline {
+            text-align: left;
+            border-left: 3px solid var(--primary-color);
+            padding-left: 20px;
+            margin: 30px auto;
+            max-width: 500px;
+        }
+        .timeline-event { position: relative; padding: 10px 0; }
+        .timeline-event::before {
+            content: '•'; color: var(--accent-color); font-size: 24px;
+            position: absolute; left: -29px; top: 6px;
         }
 
-        .info-subtitle {
-            font-weight: 700;
-            font-size: 1.15rem;
-            margin-top: 35px;
-            margin-bottom: 8px;
-            color: #000;
+        /* --- REGLAS Y REGALOS (ESTILO IMAGEN) --- */
+        .info-section {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
         }
-
+        .info-title { color: var(--title-blue); font-size: 1.4rem; font-weight: 700; margin-top: 40px; margin-bottom: 5px; }
+        .info-text { font-size: 1.05rem; color: #555; margin-bottom: 10px; }
+        .info-subtitle { font-weight: 700; font-size: 1.1rem; margin-top: 25px; color: #000; }
+        
         .bank-details {
-            margin-top: 25px;
-            font-size: 1.05rem;
+            margin-top: 20px;
             background: #fff;
             padding: 20px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
         }
 
-        .bank-details p { margin: 8px 0; }
-
-        .amazon-link {
-            color: #0066c0;
-            text-decoration: underline;
-            word-break: break-all;
-            display: inline-block;
-            margin-top: 5px;
-            font-size: 0.9rem;
-        }
-
-        /* --- RSVP Y FORMULARIO --- */
-        .rsvp-container {
-            background-color: #f9f9f9;
-            padding: 60px 20px;
-        }
-
+        /* --- FORMULARIO RSVP --- */
+        .rsvp-section { background-color: #f4f4f4; padding: 60px 20px; }
+        
         .btn {
-            display: inline-block;
             background-color: var(--accent-color);
             color: white;
             padding: 16px 30px;
-            text-decoration: none;
-            font-weight: bold;
             border-radius: 50px;
-            margin-top: 15px;
             border: none;
             cursor: pointer;
             text-transform: uppercase;
+            font-weight: bold;
             width: 100%;
             max-width: 300px;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
+            margin-top: 20px;
         }
 
         input[type="text"], textarea, select { 
-            width: 100%; 
-            padding: 14px; 
-            margin: 10px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 8px; 
-            font-size: 1rem;
+            width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 1rem;
         }
 
-        footer { background-color: #222; color: #888; padding: 30px 20px; font-size: 0.8rem; }
+        iframe { width: 100%; height: 250px; border-radius: 8px; margin-top: 15px; border:0; }
 
-        /* Ajustes para pantallas muy pequeñas */
+        footer { background-color: #222; color: #888; padding: 30px 20px; font-size: 0.8rem; text-align: center; }
+
         @media (max-width: 480px) {
             .hero { padding-top: 20dvh; }
             .hero h1 { font-size: 2.8rem; }
-            .info-section { padding: 40px 15px; }
         }
     </style>
 </head>
@@ -194,106 +175,102 @@
         <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
     </div>
 
-    <div class="info-section">
-        <div class="info-title">Código de Vestimenta</div>
-        <div class="info-text">
-            Formal.<br>
-            Color blanco y semejantes están prohibidos.<br>
-            El color blanco está reservado para la novia.
-        </div>
-
-        <div class="info-title">Importante</div>
-        <div class="info-text">
-            Agradeceremos su colaboración con lo siguiente:<br><br>
-            Evento solo para adultos, no niños.<br>
-            Indispensable confirmar asistencia.<br>
-            No saques tu teléfono en la ceremonia.<br>
-            Disfrutemos el momento sin distracciones.
-        </div>
-
-        <div class="info-title">Regalos</div>
-        <div class="info-text">
-            Su presencia es nuestro mejor regalo.<br>
-            Si desean tener un detalle, pueden hacerlo a través de las<br>
-            siguientes opciones:
-        </div>
-
-        <div class="info-subtitle">Mesa de regalos Amazon</div>
-        <a href="https://www.amazon.com.mx/wedding/share/bodadavidylaiza" class="amazon-link" target="_blank">
-            https://www.amazon.com.mx/wedding/share/bodadavidylaiza
-        </a>
-
-        <div class="info-subtitle">Regalos en efectivo</div>
-        <div class="info-text">
-            Transferencia a nuestras cuentas bancarias BBVA con el<br>
-            concepto "Donativo boda".
-        </div>
-
-        <div class="bank-details">
-            <p><strong>Laiza Moreno Trevizo</strong></p>
-            <p>CLABE: 012150015829571643</p>
-            <br>
-            <p><strong>Jesus David Melendez Aguirre</strong></p>
-            <p>CLABE: 012180015144034592</p>
+    <!-- SECCIÓN: CELEBRACIÓN -->
+    <div class="container">
+        <h2>La Celebración</h2>
+        <div class="card">
+            <h3>📍 Lugar y Horario</h3>
+            <p>La Cayetana, Chihuahua.</p>
+            <p><strong>Ceremonia:</strong> 5:00 PM</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx"></iframe>
         </div>
     </div>
 
-    <div class="rsvp-container" id="rsvp">
-        <h2>Confirmación de Asistencia</h2>
+    <!-- SECCIÓN: ITINERARIO -->
+    <div class="container" style="background: white;">
+        <h2>Itinerario</h2>
+        <div class="timeline">
+            <div class="timeline-event"><p><strong>4:45 PM:</strong> Bienvenida</p></div>
+            <div class="timeline-event"><p><strong>5:00 PM:</strong> Ceremonia</p></div>
+            <div class="timeline-event"><p><strong>6:00 PM:</strong> Cóctel</p></div>
+            <div class="timeline-event"><p><strong>7:30 PM:</strong> Cena y Baile</p></div>
+        </div>
+    </div>
+
+    <!-- SECCIÓN: REGLAS Y REGALOS -->
+    <div class="info-section">
+        <div class="info-title">Código de Vestimenta</div>
+        <div class="info-text">Formal. El color blanco está reservado para la novia.</div>
+
+        <div class="info-title">Importante</div>
+        <div class="info-text">
+            Evento solo para adultos.<br>
+            No saques tu teléfono en la ceremonia.
+        </div>
+
+        <div class="info-title">Regalos</div>
+        <div class="info-text">Si desean tener un detalle, pueden hacerlo a través de:</div>
+
+        <div class="info-subtitle">Mesa de regalos Amazon</div>
+        <a href="https://www.amazon.com.mx/wedding/share/bodadavidylaiza" class="amazon-link" target="_blank">Ver Mesa de Regalos</a>
+
+        <div class="info-subtitle">Regalos en efectivo</div>
+        <div class="bank-details">
+            <p><strong>Laiza Moreno Trevizo</strong><br>CLABE: 012150015829571643</p>
+            <br>
+            <p><strong>Jesus David Melendez Aguirre</strong><br>CLABE: 012180015144034592</p>
+        </div>
+    </div>
+
+    <!-- SECCIÓN: RSVP -->
+    <div class="rsvp-section" id="rsvp">
+        <h2>Confirmación</h2>
         {% if validation.success %}
-            <div style="background:#d4edda; color:#155724; padding:20px; border-radius:12px; max-width: 500px; margin: 0 auto;">
-                <h3>¡Gracias {{ validation.nombre_invitado }}!</h3>
-                <p>Confirmación registrada exitosamente.</p>
+            <div style="background:#d4edda; padding:20px; border-radius:12px; max-width:500px; margin:0 auto;">
+                <p>¡Gracias! Confirmación recibida.</p>
             </div>
         {% else %}
             {% if family_members|length == 0 %}
-                <form action="/rsvp" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
-                    <label style="font-weight:bold; margin-bottom: 5px; display:block;">Nombre Completo:</label>
-                    <input type="text" name="invitado_search" placeholder="Como aparece en tu invitación" required>
-                    <button type="submit" class="btn" style="max-width: 100%;">Buscar Grupo</button>
+                <form action="/rsvp" method="POST" style="max-width:400px; margin:0 auto;">
+                    <input type="text" name="invitado_search" placeholder="Tu nombre completo" required>
+                    <button type="submit" class="btn">Buscar Invitación</button>
                 </form>
             {% else %}
-                <form action="/rsvp" method="POST" style="max-width: 450px; margin: 0 auto; text-align: left; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                <form action="/rsvp" method="POST" style="max-width:450px; margin:0 auto; background:white; padding:30px; border-radius:12px;">
                     <input type="hidden" name="id_familia_hidden" value="{{ current_id }}">
                     {% for member in family_members %}
-                    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 12px 0;">
-                        <span style="font-weight: 500;">{{ member.nombre }}</span>
-                        <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0; padding: 5px 10px;">
+                    <div style="display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid #eee;">
+                        <span>{{ member.nombre }}</span>
+                        <select name="asistencia_{{ member.nombre|replace(' ', '_') }}">
                             <option value="Si">Sí</option>
                             <option value="No">No</option>
                         </select>
                     </div>
                     {% endfor %}
-                    <label style="margin-top:20px; display:block; font-weight:bold;">¿Quién confirma?:</label>
-                    <input type="text" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
-                    <label style="font-weight:bold;">Mensaje para los novios:</label>
-                    <textarea name="mensaje" rows="3" placeholder="Opcional"></textarea>
-                    <button type="submit" class="btn" style="max-width: 100%;">Confirmar Asistencia</button>
+                    <input type="text" name="confirmador_quien_escribio" placeholder="¿Quién confirma?" required style="margin-top:20px;">
+                    <textarea name="mensaje" rows="2" placeholder="Mensaje opcional"></textarea>
+                    <button type="submit" class="btn">Confirmar</button>
                 </form>
             {% endif %}
         {% endif %}
     </div>
 
     <footer>
-        <p>13 de junio del 2026 | Laiza & David</p>
+        <p>13 de Junio de 2026 | Laiza & David</p>
     </footer>
 
     <script>
-        const weddingDate = new Date(2026, 5, 13, 18, 0, 0).getTime();
+        const weddingDate = new Date(2026, 5, 13, 17, 0, 0).getTime();
         function updateTimer() {
             const now = new Date().getTime();
-            const distance = weddingDate - now;
-            if (distance < 0) {
-                document.getElementById("countdown").innerHTML = "¡Es Hoy!";
-                return;
-            }
-            document.getElementById("days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24));
-            document.getElementById("hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            document.getElementById("minutes").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const d = weddingDate - now;
+            if (d < 0) return;
+            document.getElementById("days").innerText = Math.floor(d / (1000*60*60*24));
+            document.getElementById("hours").innerText = Math.floor((d % (1000*60*60*24)) / (1000*60*60));
+            document.getElementById("minutes").innerText = Math.floor((d % (1000*60*60)) / (1000*60));
         }
         setInterval(updateTimer, 1000);
         updateTimer();
     </script>
 </body>
 </html>
-
