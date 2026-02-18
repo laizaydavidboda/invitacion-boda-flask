@@ -95,6 +95,59 @@
             border-top: 4px solid var(--accent-color);
             margin-top: 20px;
         }
+                /* --- BOTONES/FORMULARIOS --- */
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 15px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%; 
+            border: none; 
+            cursor: pointer;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
+            background-color: #c5a028;
+        }
+        
+        input[type="text"], select, textarea {
+            width: 100%; 
+            padding: 12px; 
+            margin: 5px 0 20px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            text-align: center; /* Cambio a centrado */
+        }
+        .success-message {
+            background-color: #d4edda; 
+            color: #155724; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 20px;
+        }
+        .error-message {
+            background-color: #f8d7da; 
+            color: #721c24; 
+            padding: 20px; 
+            border-radius: 5px; 
+            margin-bottom: 20px;
+        }
+
         /* --- REGLAS Y REGALOS (ESTILO IMAGEN) --- */
         .info-section {
             max-width: 600px;
@@ -301,6 +354,7 @@
     </script>
 </body>
 </html>
+
 
 
 
