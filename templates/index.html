@@ -278,7 +278,7 @@
             </div>
         {% elif validation.error %}
             <div class="error-message">
-                <h3>Error de Confirmación</h3>
+                <h3>Error de confirmación</h3>
                 <p>{{ validation.error }}</p>
             </div>
         {% endif %}
@@ -289,11 +289,11 @@
             <form action="/rsvp" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
                 <label for="invitado_search">Tu nombre:</label>
                 <input type="text" id="invitado_search" name="invitado_search" required placeholder="EJ: JUAN PEREZ">
-                <button type="submit" class="btn">Buscar Grupo Familiar</button>
+                <button type="submit" class="btn">Buscar grupo familiar</button>
             </form>
         
         {% elif family_members|length > 0 %}
-            <h3 style="color: var(--primary-color); margin-bottom: 15px;">Confirmación de Asistencia Familiar</h3>
+            <h3 style="color: var(--primary-color); margin-bottom: 15px;">Confirmación de asistencia familiar</h3>
             <p style="margin-bottom: 25px;">Por favor, seleccione 'Sí' o 'No' para cada uno de los miembros. Un solo miembro puede confirmar a todo el grupo.</p>
             
             <form action="/rsvp" method="POST" style="max-width: 500px; margin: 0 auto; text-align: left; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
@@ -324,13 +324,13 @@
                     </tbody>
                 </table>
 
-                <label for="confirmador_quien_escribio">Tu Nombre Completo (de quien está confirmando):</label>
+                <label for="confirmador_quien_escribio">Tu nombre completo (de quien está confirmando):</label>
                 <input type="text" id="confirmador_quien_escribio" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
 
                 <label for="mensaje">Mensaje para los novios (Opcional):</label>
                 <textarea id="mensaje" name="mensaje" rows="4"></textarea>
 
-                <button type="submit" class="btn">Enviar Confirmación Final</button>
+                <button type="submit" class="btn">Enviar confirmación final</button>
             </form>
         {% endif %}
     </section>
