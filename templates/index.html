@@ -315,23 +315,22 @@
                             </td>
                             <td style="padding: 15px 0; text-align: center;">
                                 <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0;">
-                                    <option value="Si" selected>Sí</option>
-                                    <option value="No">No</option>
+                            <option value="Si">Sí, asistirá</option>
+                            <option value="No">No podrá asistir</option>
+                            <option value="Pendiente">Aún no lo sé / Pendiente</option>
                                 </select>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                       </div>
+                    {% endfor %}
 
-                <label for="confirmador_quien_escribio">Tu nombre completo (de quien está confirmando):</label>
-                <input type="text" id="confirmador_quien_escribio" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
+                    <label style="margin-top: 25px;">Tu nombre para validar:</label>
+                    <input type="text" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
+                    
+                    <label>Algún mensaje o duda:</label>
+                    <textarea name="mensaje" rows="2" placeholder="Opcional"></textarea>
 
-                <label for="mensaje">Mensaje para los novios (Opcional):</label>
-                <textarea id="mensaje" name="mensaje" rows="4"></textarea>
-
-                <button type="submit" class="btn">Enviar confirmación final</button>
-            </form>
+                    <button type="submit" class="btn">Enviar respuesta</button>
+                </form>
+            {% endif %}
         {% endif %}
     </section>
     <footer>
@@ -353,6 +352,7 @@
     </script>
 </body>
 </html>
+
 
 
 
