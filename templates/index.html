@@ -190,7 +190,7 @@
         {% endif %}
 
         {% if family_members|length == 0 and not validation.success %}
-            <p style="max-width: 500px; margin-bottom: 30px;">Ingrese el nombre completo de cualquier integrante de su familia (en MAYÚSCULAS). <br><b>Favor de confirmar antes del 25 de marzo.</b></p>
+            <p style="max-width: 500px; margin-bottom: 30px;">Ingrese el nombre  de cualquier integrante de su familia. <br><b>Favor de confirmar antes del 25 de marzo.</b></p>
             
             <form action="/rsvp#rsvp" method="POST">
                 <input type="text" name="invitado_search" required placeholder="EJ: JUAN PEREZ">
@@ -235,7 +235,7 @@
 
                 <div style="text-align: center;">
                     <button type="submit" class="btn">Enviar respuesta</button>
-                    <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">Si cambian tus planes, tienes hasta el 25 de marzo para cambiar tu respuesta.</p>
+                    <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">Si cambian tus planes, tienes hasta el 25 de marzo para cambiar tu respuesta. Pendientes sin confirmar antes del 25 serán considerados como un no.</p>
                 </div>
             </form>
         {% endif %}
@@ -267,6 +267,7 @@
     </script>
 </body>
 </html>
+
 
 
 
