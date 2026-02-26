@@ -11,15 +11,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <style>
-        /* --- RESET --- */
+        /* --- RESET Y ESTILOS BASE --- */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         :root {
             --primary-color: #97B6E5; /* AZUL */
             --accent-color: #D4AF37;  /* Dorado */
             --text-color: #4a4a4a;
-            --bg-color: #fdfbf7;      /* Blanco crema muy suave */
-            --title-blue: #8ba8d9;    /* Azul suave de los títulos */
+            --bg-color: #fdfbf7;      /* Blanco crema */
+            --title-blue: #8ba8d9;
         }
 
         body {
@@ -33,39 +33,23 @@
 
         h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
-        /* --- PORTADA (HERO) --- */
+        /* --- PORTADA --- */
         .hero {
-            height: 100vh;
             height: 100dvh;
-            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), 
-                        url('https://i.imgur.com/a8xAcmN.jpeg');
+            background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), url('https://i.imgur.com/a8xAcmN.jpeg');
             background-size: cover;
             background-position: center 30%;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding-top: 70dvh; /* Texto bajado para que no tape caras */
+            padding-top: 70dvh;
             align-items: center;
             color: white;
-            text-align: center;
             padding-left: 20px;
             padding-right: 20px;
         }
-
-        .hero h1 { 
-            font-size: clamp(2.5rem, 10vw, 4rem); 
-            margin: 0.5rem 0;
-            color: white; 
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.6); 
-        }
-        
-        .hero p { 
-            font-size: clamp(1rem, 4vw, 1.5rem); 
-            letter-spacing: 3px; 
-            text-transform: uppercase; 
-            color: white;
-            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
-        }
+        .hero h1 { font-size: clamp(2.5rem, 10vw, 4rem); margin: 0.5rem 0; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
+        .hero p { font-size: clamp(1rem, 4vw, 1.5rem); letter-spacing: 3px; text-transform: uppercase; text-shadow: 1px 1px 4px rgba(0,0,0,0.5); }
 
         /* --- CUENTA REGRESIVA --- */
         .countdown {
@@ -75,62 +59,24 @@
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 15px;
-            text-align: center;
         }
         .time-box span { font-size: 2rem; font-weight: bold; display: block; }
-        .time-box p { font-size: 0.7rem; text-transform: uppercase; }
 
         /* --- SECCIONES --- */
-        .container {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 60px 20px;
-        }
+        .container { max-width: 800px; margin: 0 auto; padding: 60px 20px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--accent-color); margin-top: 20px; }
 
-        .card {
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            border-top: 4px solid var(--accent-color);
-            margin-top: 20px;
-        }
+        .info-section { max-width: 650px; margin: 0 auto; padding: 60px 20px; }
+        .info-title { color: var(--title-blue); font-size: 1.5rem; font-weight: 700; margin-top: 40px; }
+        .bank-details { background: #fff; padding: 25px; border-radius: 12px; margin-top: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
 
-        /* --- REGLAS Y REGALOS --- */
-        .info-section {
-            max-width: 650px;
-            margin: 0 auto;
-            padding: 60px 20px;
-            text-align: center;
-        }
-        .info-title { color: var(--title-blue); font-size: 1.5rem; font-weight: 700; margin-top: 40px; margin-bottom: 8px; }
-        .info-text { font-size: 1.1rem; color: #444; margin-bottom: 15px; }
-        .info-subtitle { font-weight: 700; font-size: 1.2rem; margin-top: 30px; margin-bottom: 10px; color: #000; }
-        
-        .bank-details {
-            margin-top: 20px;
-            background: #fff;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            text-align: center;
-        }
-        .bank-details p { margin-bottom: 5px; }
-
-        /* --- RSVP SECTION (CENTRADO) --- */
+        /* --- RSVP (CENTRADO Y EDITABLE) --- */
         .rsvp-section {
             background-color: #f4f4f4; 
             padding: 80px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-        }
-
-        .rsvp-section form {
-            width: 100%;
-            max-width: 500px;
-            margin: 0 auto;
         }
 
         .btn {
@@ -138,38 +84,33 @@
             background-color: var(--accent-color);
             color: white;
             padding: 16px 40px;
-            text-decoration: none;
-            font-weight: bold;
             border-radius: 50px;
             margin-top: 25px;
             border: none; 
             cursor: pointer;
             text-transform: uppercase;
+            font-weight: bold;
             width: 100%;
             max-width: 300px;
         }
 
         input[type="text"], select, textarea {
-            width: 100%; 
-            padding: 14px; 
-            margin: 10px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 1rem;
-            display: block;
+            width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem;
         }
-        
-        label {
-            display: block;
-            margin-top: 15px;
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin-top: 5px;
             font-weight: bold;
-            text-align: center;
         }
+        .status-si { background: #d4edda; color: #155724; }
+        .status-no { background: #f8d7da; color: #721c24; }
+        .status-pendiente { background: #fff3cd; color: #856404; }
 
-        iframe { width: 100%; height: 300px; border: 0; border-radius: 12px; margin-top: 15px; }
-
-        footer { background-color: #222; color: #888; padding: 40px 20px; font-size: 0.9rem; }
+        footer { background-color: #222; color: #888; padding: 40px 20px; }
     </style>
 </head>
 <body>
@@ -186,119 +127,94 @@
         <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
     </div>
 
-    <!-- SECCIÓN 2: CELEBRACIÓN -->
+    <!-- CELEBRACIÓN -->
     <div class="container">
         <h2>La celebración</h2>
-        <p>La totalidad de nuestro evento será en La Cayetana.</p>
-
         <div class="card">
             <h3>Ceremonia y recepción</h3>
-            <p><strong>Boda religiosa:</strong> 7:00 PM</p>
-            <p><strong>Recepción:</strong> 8:00 PM - 1:00 AM</p>
+            <p><strong>Boda religiosa:</strong> 7:00 PM | <strong>Recepción:</strong> 8:00 PM</p>
             <p>La Cayetana, Chihuahua.</p>
             <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
-            <br><br>
-            <a href="https://goo.gl/maps/tulink-lugar" target="_blank" style="color: var(--primary-color); font-weight:bold; text-decoration: none;">Ver en Google Maps</a>
         </div>
     </div>
-    
-    <!-- SECCIÓN: REGLAS Y REGALOS -->
+
+    <!-- REGLAS Y REGALOS -->
     <div class="info-section">
         <div class="info-title">Código de vestimenta</div>
-        <div class="info-text">Formal completo.<br>
-            Color blanco y semejantes están prohibidos.<br>
-            El color blanco está reservado para la novia.</div>
+        <div class="info-text">Formal completo. Blanco reservado para la novia.</div>
 
         <div class="info-title">Importante</div>
-        <div class="info-text">
-            Agradeceremos su colaboración con lo siguiente:<br>
-            Evento solo para adultos, no niños.<br>
-            Indispensable confirmar asistencia.<br>
-            No saques tu teléfono en la ceremonia.<br>
-            Disfrutemos el momento sin distracciones.
-        </div>
+        <div class="info-text">Evento solo para adultos. Por favor, no usar teléfonos en la ceremonia.</div>
 
         <div class="info-title">Regalos</div>
-        <div class="info-text">
-            Su presencia es nuestro mejor regalo.<br>
-            Si desean tener un detalle, pueden hacerlo a través de las siguientes opciones:</div>
-
-        <div class="info-subtitle">Mesa de regalos Amazon</div>
-        <a href="https://www.amazon.com.mx/wedding/share/bodadavidylaiza" target="_blank" style="color: #0066c0; text-decoration: underline;">https://www.amazon.com.mx/wedding/share/bodadavidylaiza</a>
-
-        <div class="info-subtitle">Regalos en efectivo</div>
-        <div class="info-text">Transferencia a nuestras cuentas bancarias BBVA con el concepto "Donativo boda".</div>
+        <a href="https://www.amazon.com.mx/wedding/share/bodadavidylaiza" target="_blank" style="color: #0066c0;">Mesa de Regalos Amazon</a>
         <div class="bank-details">
-            <p><strong>Laiza Moreno Trevizo</strong></p>
-            <p>CLABE: 012150015829571643</p>
-            <br>
-            <p><strong>Jesus David Melendez Aguirre</strong></p>
-            <p>CLABE: 012180015144034592</p>
+            <p><strong>Laiza Moreno Trevizo</strong>: CLABE 012150015829571643</p>
+            <p><strong>Jesus David Melendez Aguirre</strong>: CLABE 012180015144034592</p>
         </div>
     </div>
 
-    <!-- SECCIÓN RSVP -->
+    <!-- SECCIÓN RSVP (ID rsvp para el anclaje) -->
     <section class="rsvp-section" id="rsvp">
         <h2>Confirmación de asistencia</h2>
-        
+
         {% if validation.success %}
-            <div style="background:#d4edda; color:#155724; padding:20px; border-radius:12px; max-width: 500px;">
-                <h3>¡Muchas gracias por confirmar!</h3>
+            <div style="background:#d4edda; color:#155724; padding:30px; border-radius:12px; max-width: 500px; margin-bottom: 20px;">
+                <h3>¡Registro exitoso!</h3>
+                <p>Tu respuesta ha sido guardada. Si necesitas cambiar algo, puedes volver a buscar tu nombre abajo.</p>
+                <!-- Al hacer clic, se queda en la misma sección -->
+                <a href="#rsvp" class="btn" style="background: #155724; margin-top: 15px; text-decoration: none; font-size: 0.8rem;">Volver a buscar</a>
             </div>
         {% elif validation.error %}
             <div style="background:#f8d7da; color:#721c24; padding:20px; border-radius:12px; max-width: 500px; margin-bottom: 20px;">
-                <h3>Error de confirmación</h3>
                 <p>{{ validation.error }}</p>
             </div>
         {% endif %}
-        
+
         {% if family_members|length == 0 and not validation.success %}
-            <p style="max-width: 500px; margin-bottom: 30px;">Por favor, ingrese cualquier nombre en MAYÚSCULAS que aparezca en su invitación. <b>Favor de confirmar antes del 25 de marzo.</b></p>
-            
-            <form action="/rsvp" method="POST">
-                <label>Tu nombre:</label>
-                <input type="text" name="invitado_search" required placeholder="EJ: JUAN PEREZ">
-                <button type="submit" class="btn">Buscar mi invitación</button>
+            <p style="max-width: 500px; margin-bottom: 30px;">Busca tu nombre para confirmar o editar tu respuesta. <br><b>Favor de confirmar antes del 25 de marzo.</b></p>
+            <!-- SE AÑADE #rsvp AL ACTION -->
+            <form action="/rsvp#rsvp" method="POST">
+                <input type="text" name="invitado_search" required placeholder="TU NOMBRE EN MAYÚSCULAS">
+                <button type="submit" class="btn">Buscar mi grupo</button>
             </form>
-        
+
         {% elif family_members|length > 0 %}
-            <form action="/rsvp" method="POST" style="background: white; padding: 30px; border-radius: 12px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <!-- SE AÑADE #rsvp AL ACTION -->
+            <form action="/rsvp#rsvp" method="POST" style="background: white; padding: 30px; border-radius: 12px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05); width: 100%; max-width: 500px;">
                 <input type="hidden" name="id_familia_hidden" value="{{ current_id }}">
                 
-                <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
-                    <thead>
-                        <tr style="border-bottom: 2px solid var(--primary-color);">
-                            <th style="padding: 10px 0; text-align: left;">Invitado</th>
-                            <th style="padding: 10px 0; text-align: center;">Asistencia</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for member in family_members %}
-                        <tr style="border-bottom: 1px solid #eee;">
-                            <td style="padding: 15px 0;">
-                                <span style="font-weight: 700;">{{ member.nombre }}</span>
-                                <span style="display: block; font-size: 0.8rem; color: #888;">({{ member.asignados }} asiento(s) asignado(s))</span>
-                            </td>
-                            <td style="padding: 15px 0; text-align: center;">
-                                <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0; padding: 5px;">
-                                    <option value="Si">Sí, asistirá</option>
-                                    <option value="No">No podrá asistir</option>
-                                    <option value="Pendiente">Aún no sé / Pendiente</option>
-                                </select>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                <h3 style="margin-bottom: 20px; font-size: 1.1rem; color: var(--primary-color);">Grupo Familiar Encontrado:</h3>
 
-                <label style="text-align: left;">Tu nombre para validar:</label>
-                <input type="text" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
+                {% for member in family_members %}
+                <div style="padding: 15px 0; border-bottom: 1px solid #eee;">
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <div>
+                            <span style="font-weight: 700;">{{ member.nombre }}</span>
+                            {% if member.asistencia %}
+                                <div class="status-badge status-{{ member.asistencia|lower }}">
+                                    Actual: {{ member.asistencia }}
+                                </div>
+                            {% endif %}
+                        </div>
+                        <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0;">
+                            <option value="Si" {% if member.asistencia == 'Si' %}selected{% endif %}>Sí, asistirá</option>
+                            <option value="No" {% if member.asistencia == 'No' %}selected{% endif %}>No podrá asistir</option>
+                            <option value="Pendiente" {% if member.asistencia == 'Pendiente' or not member.asistencia %}selected{% endif %}>Pendiente</option>
+                        </select>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <label style="margin-top: 25px;">¿Quién está llenando este formulario?:</label>
+                <input type="text" name="confirmador_quien_escribio" required value="{{ confirmador_name if confirmador_name else '' }}">
                 
-                <label style="text-align: left;">Algún mensaje o duda:</label>
-                <textarea name="mensaje" rows="2" placeholder="Opcional"></textarea>
+                <label>Mensaje opcional:</label>
+                <textarea name="mensaje" rows="2">{{ mensaje_anterior if mensaje_anterior else '' }}</textarea>
 
                 <div style="text-align: center;">
-                    <button type="submit" class="btn">Enviar confirmación</button>
+                    <button type="submit" class="btn">Guardar Cambios</button>
+                    <p style="font-size: 0.7rem; color: #999; margin-top: 10px;">Puedes volver a editar esto en cualquier momento antes del 25 de marzo.</p>
                 </div>
             </form>
         {% endif %}
@@ -320,7 +236,14 @@
         }
         setInterval(updateTimer, 1000);
         updateTimer();
+
+        // Pequeño truco extra: si la URL contiene #rsvp, forzamos el scroll suave
+        window.onload = function() {
+            if(window.location.hash === "#rsvp") {
+                const element = document.getElementById("rsvp");
+                if(element) element.scrollIntoView({behavior: "smooth"});
+            }
+        };
     </script>
 </body>
 </html>
-
