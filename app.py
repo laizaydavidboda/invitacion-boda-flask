@@ -11,231 +11,167 @@ app.secret_key = 'clave_secreta_laizaydavid'
 
 # --- CONFIGURACIÓN DE ARCHIVOS ---
 DB_CONFIRMADOS = 'invitados.csv'
-DB_MAESTRA = 'lista_maestra_flexible.csv' # ¡NOMBRE FINAL DEL ARCHIVO!
-DB_CONFIRMADOS_CHECK = 'confirmados_check.csv' 
-
-# --- CONFIGURACIÓN DE FECHAS Y FASES (¡AJUSTA ESTAS FECHAS!) ---
-# Las fechas deben ser objetos datetime
-FECHA_DE_CORTE_ETAPA_1 = datetime(2026, 1, 15) # Ejemplo: Si es hoy o antes, se abre ETAPA 1
-FECHA_DE_CORTE_ETAPA_2 = datetime(2026, 3, 15) # Ejemplo: Si es hoy o antes, se abre ETAPA 2
-# Si la fecha actual es posterior a la última fecha de corte, solo BASE puede confirmar.
-
-# --- CONFIGURACIÓN DE GOOGLE SHEETS ---
-SHEET_NAME = 'Lista de Invitados Boda Laiza y David'
-WORKSHEET_NAME = 'Confirmados' 
+DB_MAESTRA = 'lista_maestra_flexible.csv' 
 GOOGLE_SERVICE_ACCOUNT_KEY = 'GOOGLE_SERVICE_ACCOUNT_JSON'
+SHEET_NAME = 'Lista de Invitados Boda Laiza y David'
+WORKSHEET_NAME = 'Confirmados'
 
+# --- CONFIGURACIÓN DE ETAPAS ---
+# Solo permitimos Base y Etapa 1 por ahora
+ETAPAS_PERMITIDAS = ['BASE', 'ETAPA 1']
 
-# --- FUNCIÓN DE GESTIÓN DE FASES ---
+# --- FUNCIONES DE APOYO ---
 
-def obtener_fase_actual():
-    """Determina la fase de invitación activa basándose en la fecha actual."""
-    hoy = datetime.now()
-    
-    if hoy <= FECHA_DE_CORTE_ETAPA_1:
-        return 'ETAPA 1'
-    elif hoy <= FECHA_DE_CORTE_ETAPA_2:
-        return 'ETAPA 2'
-    else:
-        # Si pasó la última fecha de corte, solo BASE puede confirmar
-        return 'ETAPA 3' 
-
-# --- FUNCIONES DE BASE DE DATOS LOCALES ---
-
-def cargar_lista_maestra():
-    """Carga el CSV de la lista maestra detallada, agrupando por ID_Familia y Fase."""
-    lista_detallada = {}
-    nombres_a_id = {}
-    
-    try:
-        # Nota: El archivo lista_maestra_flexible.csv debe tener 4 columnas: ID_Familia, Nombre_Invitado, Asignados, Fase
-        with open(DB_MAESTRA, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            
-            for row in reader:
-                id_familia = row['ID_Familia'].strip()
-                invitado = row['Nombre_Invitado'].strip()
-                asignados = int(row['Asignados'].strip())
-                fase = row['Fase'].strip() # Leemos la columna Fase
-
-                # Validación de Fases: Si la fase no es BASE, debe ser ETAPA 1, 2 o 3
-                if fase not in ['BASE', 'ETAPA 1', 'ETAPA 2', 'ETAPA 3']:
-                    fase = 'BASE' # Default de seguridad
-                
-                if id_familia not in lista_detallada:
-                    lista_detallada[id_familia] = []
-                
-                lista_detallada[id_familia].append({
-                    'nombre': invitado, 
-                    'asignados': asignados,
-                    'fase': fase 
-                })
-                
-                nombres_a_id[invitado] = id_familia 
-                
-    except Exception as e:
-        print(f"ERROR leyendo lista maestra: {e}")
-        return {}, {}
-        
-    return lista_detallada, nombres_a_id
-
-def init_db():
-    """Inicializa los CSVs de confirmados y chequeo."""
-    if not os.path.exists(DB_CONFIRMADOS):
-        with open(DB_CONFIRMADOS, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(['Fecha', 'ID_Familia', 'Nombre_Invitado', 'Asistencia', 'Mensaje', 'Confirmador_Quien_Escribió'])
-    
-    if not os.path.exists(DB_CONFIRMADOS_CHECK):
-        with open(DB_CONFIRMADOS_CHECK, mode='w', newline='', encoding='utf-8') as file:
-            writer = csv.writer(file)
-            writer.writerow(['ID_Familia'])
-
-def guardar_confirmador_check(id_familia):
-    """Guarda el ID_Familia para evitar duplicados."""
-    with open(DB_CONFIRMADOS_CHECK, mode='a', newline='', encoding='utf-8') as file:
-        writer = csv.writer(file)
-        writer.writerow([id_familia])
-
-def esta_confirmado(id_familia):
-    """Verifica si el ID_Familia ya envió el formulario."""
-    try:
-        with open(DB_CONFIRMADOS_CHECK, mode='r', encoding='utf-8') as file:
-            reader = csv.DictReader(file)
-            return id_familia in [row['ID_Familia'].strip() for row in reader]
-    except FileNotFoundError:
-        return False
-
-# --- FUNCIÓN DE GOOGLE SHEETS (Segura con Variables de Entorno) ---
-
-def guardar_en_sheets(datos):
-    """Guarda una fila de datos en la hoja de cálculo de Google."""
+def get_google_sheet():
+    """Conecta con Google Sheets usando la clave en variables de entorno."""
     try:
         creds_json = json.loads(os.environ.get(GOOGLE_SERVICE_ACCOUNT_KEY))
         scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
         creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_json, scope)
         client = gspread.authorize(creds)
-        
-        sheet = client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
-        sheet.append_row(datos)
-        print(f"Datos guardados exitosamente en Google Sheets.")
-        
+        return client.open(SHEET_NAME).worksheet(WORKSHEET_NAME)
     except Exception as e:
-        print(f"ERROR al guardar en Google Sheets: {e}")
-        pass
+        print(f"Error conexión Sheets: {e}")
+        return None
 
+def cargar_lista_maestra():
+    """Carga los invitados del CSV maestro."""
+    lista = {}
+    nombres_to_id = {}
+    try:
+        if not os.path.exists(DB_MAESTRA): return {}, {}
+        with open(DB_MAESTRA, mode='r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                id_f = row['ID_Familia'].strip()
+                if id_f not in lista: lista[id_f] = []
+                invitado = {
+                    'nombre': row['Nombre_Invitado'].strip(),
+                    'asignados': row['Asignados'].strip(),
+                    'fase': row['Fase'].strip().upper()
+                }
+                lista[id_f].append(invitado)
+                nombres_to_id[invitado['nombre'].upper()] = id_f
+    except: pass
+    return lista, nombres_to_id
 
-# --- RUTAS DE FLASK ---
+def obtener_respuestas_previas(id_familia):
+    """Busca en el Google Sheet si la familia ya tiene respuestas guardadas."""
+    ws = get_google_sheet()
+    if not ws: return {}, "", ""
+    
+    records = ws.get_all_records()
+    respuestas = {}
+    msg = ""
+    conf = ""
+    
+    for row in records:
+        if str(row.get('ID_Familia')) == str(id_familia):
+            nombre = row.get('Nombre_Invitado')
+            respuestas[nombre] = row.get('Asistencia')
+            msg = row.get('Mensaje', '')
+            conf = row.get('Confirmador_Quien_Escribió', '')
+    
+    return respuestas, msg, conf
+
+# --- RUTAS ---
 
 @app.route('/')
 def home():
-    """Ruta principal: Muestra la portada y el formulario de búsqueda de invitado."""
-    # current_id: Se usa para el input oculto en el HTML si la familia ya está cargada
     return render_template('index.html', validation={}, family_members=[], current_id='')
 
 @app.route('/rsvp', methods=['POST'])
 def rsvp_controller():
-    """Controla el flujo: 1. Busca el invitado y carga la familia o 2. Procesa la confirmación."""
+    lista_maestra, nombres_to_id = cargar_lista_maestra()
     
-    lista_detallada, nombres_a_id = cargar_lista_maestra()
-    fase_actual_str = obtener_fase_actual() # String: 'ETAPA 1', 'ETAPA 2', 'ETAPA 3'
-    
+    # CASO 1: BUSCAR INVITADO
     if 'invitado_search' in request.form:
-        # --- PASO 1: BUSCAR INVITADO (Formulario de portada) ---
-        invitado_search = request.form.get('invitado_search').strip()
+        search = request.form.get('invitado_search').strip().upper()
         
-        if invitado_search not in nombres_a_id:
+        if search not in nombres_to_id:
             return render_template('index.html', 
-                                   validation={'error': f'Lo sentimos, el nombre "{invitado_search}" no fue encontrado en nuestra lista. Por favor, ingrese un nombre exacto de su invitación.'},
-                                   family_members=[], current_id='')
+                validation={'error': f'No encontramos el nombre "{search}". Revisa que esté igual que en tu invitación.'},
+                family_members=[], current_id='')
 
-        id_familia_encontrado = nombres_a_id[invitado_search]
-        members = lista_detallada[id_familia_encontrado]
-        familia_fase = members[0].get('fase', 'BASE') 
-        
-        # 1. Chequea si la familia ya confirmó (Duplicado)
-        if esta_confirmado(id_familia_encontrado):
+        id_f = nombres_to_id[search]
+        miembros = lista_maestra[id_f]
+        fase_familia = miembros[0]['fase']
+
+        # Filtro de Etapa
+        if fase_familia not in ETAPAS_PERMITIDAS:
             return render_template('index.html', 
-                                   validation={'error': f'La confirmación de su grupo ya fue registrada. Si necesita cambiar sus datos, contacte a los novios.'},
-                                   family_members=[], current_id='')
+                validation={'error': 'Tu invitación aún no está disponible para confirmación.'},
+                family_members=[], current_id='')
 
-
-        # 2. LÓGICA DE FASES Y FECHAS DE CORTE
+        # Cargar respuestas anteriores si existen para EDITAR
+        resp_previas, msg_previo, conf_previo = obtener_respuestas_previas(id_f)
         
-        # Las fases se comparan directamente como strings: 'ETAPA 1' < 'ETAPA 2' < 'ETAPA 3'
-        
-        # Si NO es fase BASE (la cual siempre está abierta) Y la fase de la familia es posterior a la fase actual
-        # Ejemplo: Si estamos en ETAPA 1 (fase_actual) y la familia es ETAPA 2 (familia_fase). 
-        # Python compara alfabéticamente, lo cual funciona aquí si usamos ETAPA 1, ETAPA 2, etc.
-        
-        if familia_fase != 'BASE' and familia_fase > fase_actual_str:
-            
-            # Mensajes de error personalizados para guiar al usuario
-            if familia_fase == 'ETAPA 2' and fase_actual_str == 'ETAPA 1':
-                 fecha_corte = FECHA_DE_CORTE_ETAPA_1.strftime("%d de %B")
-                 msg = f'Su invitación es para la ETAPA 2. Por favor, intente de nuevo después del {fecha_corte}.'
-            elif familia_fase == 'ETAPA 3' and fase_actual_str in ['ETAPA 1', 'ETAPA 2']:
-                 fecha_corte = FECHA_DE_CORTE_ETAPA_2.strftime("%d de %B")
-                 msg = f'Su invitación es para la ETAPA 3. Por favor, intente de nuevo después del {fecha_corte}.'
-            else:
-                 msg = 'Su invitación aún no está activa. Consulte su invitación física para la fecha de corte.'
+        # Inyectamos la asistencia previa en el objeto de miembros
+        for m in miembros:
+            m['asistencia_actual'] = resp_previas.get(m['nombre'], 'Pendiente')
 
-            return render_template('index.html', 
-                                   validation={'error': msg},
-                                   family_members=[], current_id='')
-
-        # 3. Si es válido (Base siempre abierto, o Etapa activa)
         return render_template('index.html', 
-                               validation={},
-                               confirmador_name=invitado_search, 
-                               current_id=id_familia_encontrado,
-                               family_members=members)
+            validation={}, 
+            current_id=id_f, 
+            family_members=miembros,
+            confirmador_name=conf_previo if conf_previo else search,
+            mensaje_anterior=msg_previo)
 
+    # CASO 2: GUARDAR / EDITAR RESPUESTAS
     elif 'id_familia_hidden' in request.form:
-        # --- PASO 2: PROCESAR CONFIRMACIÓN (Formulario detallado) ---
-        id_familia = request.form.get('id_familia_hidden').strip()
-        confirmador_quien_escribio = request.form.get('confirmador_quien_escribio').strip()
+        id_f = request.form.get('id_familia_hidden')
+        quien = request.form.get('confirmador_quien_escribio')
         mensaje = request.form.get('mensaje', '')
-        fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        fecha = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
-        if esta_confirmado(id_familia):
-            return redirect(url_for('home'))
+        ws = get_google_sheet()
+        if not ws: return "Error de conexión con la base de datos", 500
+        
+        # Obtenemos encabezados para saber qué columna es cada cosa
+        headers = ws.row_values(1)
+        try:
+            col_id = headers.index('ID_Familia') + 1
+            col_nombre = headers.index('Nombre_Invitado') + 1
+            col_asis = headers.index('Asistencia') + 1
+            col_msg = headers.index('Mensaje') + 1
+            col_conf = headers.index('Confirmador_Quien_Escribió') + 1
+            col_fecha = headers.index('Fecha') + 1
+        except: return "Error: Las columnas del Sheet no coinciden", 500
 
-        # PROCESO DE GUARDADO
-        asistentes_confirmados = 0
-        total_a_guardar = []
+        # Procesamos cada invitado
+        all_rows = ws.get_all_values()
         
         for key, value in request.form.items():
             if key.startswith('asistencia_'):
                 guest_name = key.replace('asistencia_', '').replace('_', ' ').strip()
-                asistencia_status = 'Sí' if value == 'Si' else 'No'
-
-                if asistencia_status == 'Sí':
-                    asistentes_confirmados += 1
                 
-                fila = [fecha_actual, id_familia, guest_name, asistencia_status, mensaje, confirmador_quien_escribio]
-                total_a_guardar.append(fila)
-        
-        # Guardar en CSV Local y Google Sheets para cada miembro
-        init_db()
-        for fila in total_a_guardar:
-            with open(DB_CONFIRMADOS, mode='a', newline='', encoding='utf-8') as file:
-                writer = csv.writer(file)
-                writer.writerow(fila)
-            
-            guardar_en_sheets(fila) 
+                # Buscamos si ya existe la fila para este invitado de esta familia para ACTUALIZAR
+                fila_encontrada = -1
+                for i, row in enumerate(all_rows):
+                    if str(row[col_id-1]) == str(id_f) and row[col_nombre-1].upper() == guest_name.upper():
+                        fila_encontrada = i + 1
+                        break
+                
+                if fila_encontrada != -1:
+                    # EDITAR EXISTENTE
+                    ws.update_cell(fila_encontrada, col_asis, value)
+                    ws.update_cell(fila_encontrada, col_msg, mensaje)
+                    ws.update_cell(fila_encontrada, col_conf, quien)
+                    ws.update_cell(fila_encontrada, col_fecha, fecha)
+                else:
+                    # NUEVO REGISTRO
+                    nueva_fila = [""] * len(headers)
+                    nueva_fila[col_id-1] = id_f
+                    nueva_fila[col_nombre-1] = guest_name
+                    nueva_fila[col_asis-1] = value
+                    nueva_fila[col_msg-1] = mensaje
+                    nueva_fila[col_conf-1] = quien
+                    nueva_fila[col_fecha-1] = fecha
+                    ws.append_row(nueva_fila)
 
-        # Marcar a la familia como chequeada
-        guardar_confirmador_check(id_familia)
-        
-        print(f"¡Confirmación EXITOSA! Familia {id_familia} - Confirmador: {confirmador_quien_escribio} - {asistentes_confirmados} asistentes.")
-        
-        return render_template('index.html', 
-                               validation={'success': True, 'nombre_invitado': confirmador_quien_escribio},
-                               family_members=[], current_id='')
+        return render_template('index.html', validation={'success': True}, family_members=[], current_id='')
 
     return redirect(url_for('home'))
 
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True, port=5000)
+    app.run(debug=True)
