@@ -19,6 +19,7 @@
             --accent-color: #D4AF37;  /* Dorado */
             --text-color: #4a4a4a;
             --bg-color: #fdfbf7;      /* Blanco crema muy suave */
+            --title-blue: #8ba8d9;    /* Azul suave de los títulos */
         }
 
         body {
@@ -27,6 +28,7 @@
             background-color: var(--bg-color);
             line-height: 1.6;
             overflow-x: hidden;
+            text-align: center;
         }
 
         h1, h2, h3 { font-family: 'Playfair Display', serif; }
@@ -35,7 +37,6 @@
         .hero {
             height: 100vh;
             height: 100dvh;
-            /* CORRECCIÓN DE URL Y SINTAXIS */
             background: linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)), 
                         url('https://i.imgur.com/a8xAcmN.jpeg');
             background-size: cover;
@@ -43,7 +44,7 @@
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
-            padding-top: 70dvh; /* Texto movido hacia abajo */
+            padding-top: 25dvh; /* Texto bajado para que no tape caras */
             align-items: center;
             color: white;
             text-align: center;
@@ -79,12 +80,11 @@
         .time-box span { font-size: 2rem; font-weight: bold; display: block; }
         .time-box p { font-size: 0.7rem; text-transform: uppercase; }
 
-        /* --- SECCIONES CONTENEDORAS --- */
+        /* --- SECCIONES --- */
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 60px 20px;
-            text-align: center;
         }
 
         .card {
@@ -95,114 +95,84 @@
             border-top: 4px solid var(--accent-color);
             margin-top: 20px;
         }
-                /* --- BOTONES/FORMULARIOS --- */
-        .btn {
-            display: inline-block;
-            background-color: var(--accent-color);
-            color: white;
-            padding: 15px 40px;
-            text-decoration: none;
-            font-weight: bold;
-            border-radius: 50px;
-            margin-top: 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            width: 100%; 
-            border: none; 
-            cursor: pointer;
-        }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(212, 175, 55, 0.3);
-            background-color: #c5a028;
-        }
-        
-        input[type="text"], select, textarea {
-            width: 100%; 
-            padding: 12px; 
-            margin: 5px 0 20px 0; 
-            border: 1px solid #ccc; 
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 1rem;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-            text-align: center; /* Cambio a centrado */
-        }
-        .success-message {
-            background-color: #d4edda; 
-            color: #155724; 
-            padding: 20px; 
-            border-radius: 5px; 
-            margin-bottom: 20px;
-        }
-        .error-message {
-            background-color: #f8d7da; 
-            color: #721c24; 
-            padding: 20px; 
-            border-radius: 5px; 
-            margin-bottom: 20px;
-        }
 
-        /* --- REGLAS Y REGALOS (ESTILO IMAGEN) --- */
+        /* --- REGLAS Y REGALOS --- */
         .info-section {
-            max-width: 600px;
+            max-width: 650px;
             margin: 0 auto;
-            padding: 40px 20px;
+            padding: 60px 20px;
             text-align: center;
         }
-        .info-title { color: var(--title-blue); font-size: 1.4rem; font-weight: 700; margin-top: 40px; margin-bottom: 5px; }
-        .info-text { font-size: 1.05rem; color: #555; margin-bottom: 10px; }
-        .info-subtitle { font-weight: 700; font-size: 1.1rem; margin-top: 25px; color: #000; }
+        .info-title { color: var(--title-blue); font-size: 1.5rem; font-weight: 700; margin-top: 40px; margin-bottom: 8px; }
+        .info-text { font-size: 1.1rem; color: #444; margin-bottom: 15px; }
+        .info-subtitle { font-weight: 700; font-size: 1.2rem; margin-top: 30px; margin-bottom: 10px; color: #000; }
         
         .bank-details {
             margin-top: 20px;
             background: #fff;
-            padding: 20px;
+            padding: 25px;
             border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            text-align: center;
         }
+        .bank-details p { margin-bottom: 5px; }
 
-        /* --- RSVP SECTION (Ajustes de Centrado) --- */
+        /* --- RSVP SECTION (CENTRADO) --- */
         .rsvp-section {
             background-color: #f4f4f4; 
             padding: 80px 20px;
             display: flex;
             flex-direction: column;
-            align-items: center; /* Centra el contenido horizontalmente */
+            align-items: center;
             text-align: center;
         }
 
         .rsvp-section form {
             width: 100%;
-            max-width: 500px; /* Ancho máximo para el formulario */
+            max-width: 500px;
             margin: 0 auto;
-            text-align: center; /* Centra los textos dentro del form */
         }
 
-        .rsvp-table {
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 16px 40px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 50px;
+            margin-top: 25px;
+            border: none; 
+            cursor: pointer;
+            text-transform: uppercase;
             width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
+            max-width: 300px;
         }
 
-        .rsvp-table th {
-            padding: 10px 0;
-            text-align: center; /* Títulos de tabla centrados */
+        input[type="text"], select, textarea {
+            width: 100%; 
+            padding: 14px; 
+            margin: 10px 0; 
+            border: 1px solid #ccc; 
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            display: block;
+        }
+        
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: bold;
+            text-align: center;
         }
 
-        .rsvp-table td {
-            padding: 15px 0;
-            text-align: center; /* Datos de tabla centrados */
-        }
+        iframe { width: 100%; height: 300px; border: 0; border-radius: 12px; margin-top: 15px; }
+
+        footer { background-color: #222; color: #888; padding: 40px 20px; font-size: 0.9rem; }
     </style>
 </head>
 <body>
-
 
     <header class="hero">
         <p>¡Nos casamos!</p>
@@ -216,21 +186,19 @@
         <div class="time-box"><span id="minutes">00</span><p>Min</p></div>
     </div>
 
-    <!-- SECCIÓN 2: DETALLES Y UBICACIÓN -->
+    <!-- SECCIÓN 2: CELEBRACIÓN -->
     <div class="container">
         <h2>La celebración</h2>
         <p>La totalidad de nuestro evento será en La Cayetana.</p>
 
-        <div class="details-grid">
-            <div class="card">
-                <h3>Ceremonia y recepción</h3>
-                <p><strong>Boda religiosa:</strong> 7:00 PM</p>
-                <p><strong>Recepción:</strong> 8:00 PM - 1:00 AM</p>
-                <p>La Cayetana, Chihuahua.</p>
-                <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
-                <br><br>
-                <a href="https://goo.gl/maps/tulink-lugar" target="_blank" style="color: var(--primary-color); font-weight:bold; text-decoration: none;">Vínculo Google Maps</a>
-            </div>
+        <div class="card">
+            <h3>Ceremonia y recepción</h3>
+            <p><strong>Boda religiosa:</strong> 7:00 PM</p>
+            <p><strong>Recepción:</strong> 8:00 PM - 1:00 AM</p>
+            <p>La Cayetana, Chihuahua.</p>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d112047.4687385654!2d-106.1661549!3d28.6452413!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86ea4552b4630eff%3A0x20322dcd08985b8c!2sLa%20Cayetana%20Finca%20para%20Eventos!5e0!3m2!1ses-419!2smx!4v1764313267525!5m2!1ses-419!2smx" allowfullscreen="" loading="lazy"></iframe>
+            <br><br>
+            <a href="https://goo.gl/maps/tulink-lugar" target="_blank" style="color: var(--primary-color); font-weight:bold; text-decoration: none;">Ver en Google Maps</a>
         </div>
     </div>
     
@@ -256,47 +224,45 @@
             Si desean tener un detalle, pueden hacerlo a través de las siguientes opciones:</div>
 
         <div class="info-subtitle">Mesa de regalos Amazon</div>
-        <a href="https://www.amazon.com.mx/wedding/share/bodadavidylaiza" class="amazon-link" target="_blank">Ver Mesa de Regalos</a>
+        <a href="https://www.amazon.com.mx/wedding/share/bodadavidylaiza" target="_blank" style="color: #0066c0; text-decoration: underline;">https://www.amazon.com.mx/wedding/share/bodadavidylaiza</a>
 
         <div class="info-subtitle">Regalos en efectivo</div>
-        <div class="info-text">
-            Transferencia a nuestras cuentas bancarias BBVA con el concepto "donativo boda".</div>
+        <div class="info-text">Transferencia a nuestras cuentas bancarias BBVA con el concepto "Donativo boda".</div>
         <div class="bank-details">
-            <p><strong>Laiza Moreno Trevizo</strong><br>CLABE: 012150015829571643</p>
+            <p><strong>Laiza Moreno Trevizo</strong></p>
+            <p>CLABE: 012150015829571643</p>
             <br>
-            <p><strong>Jesus David Melendez Aguirre</strong><br>CLABE: 012180015144034592</p>
+            <p><strong>Jesus David Melendez Aguirre</strong></p>
+            <p>CLABE: 012180015144034592</p>
         </div>
     </div>
 
-    <!-- SECCIÓN 5: RSVP -->
+    <!-- SECCIÓN RSVP -->
     <section class="rsvp-section" id="rsvp">
         <h2>Confirmación de asistencia</h2>
         
         {% if validation.success %}
-            <div class="success-message">
+            <div style="background:#d4edda; color:#155724; padding:20px; border-radius:12px; max-width: 500px;">
                 <h3>¡Muchas gracias por confirmar!</h3>
             </div>
         {% elif validation.error %}
-            <div class="error-message">
+            <div style="background:#f8d7da; color:#721c24; padding:20px; border-radius:12px; max-width: 500px; margin-bottom: 20px;">
                 <h3>Error de confirmación</h3>
                 <p>{{ validation.error }}</p>
             </div>
         {% endif %}
         
         {% if family_members|length == 0 and not validation.success %}
-            <p style="max-width: 600px; margin: 0 auto 30px;">Por favor, ingrese cualquier nombre en MAYÚSCULAS que aparezca en su invitación para cargar su grupo familiar.<b> Favor de confirmar antes del 25 de marzo.</b></p>
+            <p style="max-width: 500px; margin-bottom: 30px;">Por favor, ingrese cualquier nombre en MAYÚSCULAS que aparezca en su invitación. <b>Favor de confirmar antes del 25 de marzo.</b></p>
             
-            <form action="/rsvp" method="POST" style="max-width: 400px; margin: 0 auto; text-align: left;">
-                <label for="invitado_search">Tu nombre:</label>
-                <input type="text" id="invitado_search" name="invitado_search" required placeholder="EJ: JUAN PEREZ">
-                <button type="submit" class="btn">Buscar grupo familiar</button>
+            <form action="/rsvp" method="POST">
+                <label>Tu nombre:</label>
+                <input type="text" name="invitado_search" required placeholder="EJ: JUAN PEREZ">
+                <button type="submit" class="btn">Buscar mi invitación</button>
             </form>
         
         {% elif family_members|length > 0 %}
-            <h3 style="color: var(--primary-color); margin-bottom: 15px;">Confirmación de asistencia familiar</h3>
-            <p style="margin-bottom: 25px;">Por favor, seleccione 'Sí' o 'No' para cada uno de los miembros. Un solo miembro puede confirmar a todo el grupo.</p>
-            
-            <form action="/rsvp" method="POST" style="max-width: 500px; margin: 0 auto; text-align: left; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.05);">
+            <form action="/rsvp" method="POST" style="background: white; padding: 30px; border-radius: 12px; text-align: left; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
                 <input type="hidden" name="id_familia_hidden" value="{{ current_id }}">
                 
                 <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
@@ -310,29 +276,34 @@
                         {% for member in family_members %}
                         <tr style="border-bottom: 1px solid #eee;">
                             <td style="padding: 15px 0;">
-                                <span style="font-weight: bold;">{{ member.nombre }}</span>
+                                <span style="font-weight: 700;">{{ member.nombre }}</span>
                                 <span style="display: block; font-size: 0.8rem; color: #888;">({{ member.asignados }} asiento(s) asignado(s))</span>
                             </td>
                             <td style="padding: 15px 0; text-align: center;">
-                                <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0;">
-                            <option value="Si">Sí, asistirá</option>
-                            <option value="No">No podrá asistir</option>
-                            <option value="Pendiente">Aún no lo sé / Pendiente</option>
+                                <select name="asistencia_{{ member.nombre|replace(' ', '_') }}" style="width: auto; margin: 0; padding: 5px;">
+                                    <option value="Si">Sí, asistirá</option>
+                                    <option value="No">No podrá asistir</option>
+                                    <option value="Pendiente">Aún no sé / Pendiente</option>
                                 </select>
-                       </div>
-                    {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
 
-                    <label style="margin-top: 25px;">Tu nombre para validar:</label>
-                    <input type="text" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
-                    
-                    <label>Algún mensaje o duda:</label>
-                    <textarea name="mensaje" rows="2" placeholder="Opcional"></textarea>
+                <label style="text-align: left;">Tu nombre para validar:</label>
+                <input type="text" name="confirmador_quien_escribio" required value="{{ confirmador_name }}">
+                
+                <label style="text-align: left;">Algún mensaje o duda:</label>
+                <textarea name="mensaje" rows="2" placeholder="Opcional"></textarea>
 
-                    <button type="submit" class="btn">Enviar respuesta</button>
-                </form>
-            {% endif %}
+                <div style="text-align: center;">
+                    <button type="submit" class="btn">Enviar confirmación</button>
+                </div>
+            </form>
         {% endif %}
     </section>
+
     <footer>
         <p>13 de Junio de 2026 | Laiza & David</p>
     </footer>
@@ -352,13 +323,3 @@
     </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
