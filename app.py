@@ -18,7 +18,7 @@ WORKSHEET_NAME = 'Confirmados'
 
 # --- CONFIGURACIÓN DE ETAPAS ---
 # Solo permitimos Base y Etapa 1 por ahora
-ETAPAS_PERMITIDAS = ['BASE', 'ETAPA 1']
+ETAPAS_PERMITIDAS = ['BASE', 'ETAPA 2']
 
 # --- FUNCIONES DE APOYO ---
 
