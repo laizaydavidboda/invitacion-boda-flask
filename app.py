@@ -100,7 +100,7 @@ def rsvp_controller():
         # Filtro de Etapa
         if fase_familia not in ETAPAS_PERMITIDAS:
             return render_template('index.html', 
-                validation={'error': 'Tu invitación aún no está disponible para confirmación.'},
+                validation={'error': 'Tu invitación no está disponible para confirmación.'},
                 family_members=[], current_id='')
 
         # Cargar respuestas anteriores si existen para EDITAR
