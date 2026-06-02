@@ -173,6 +173,7 @@
         </div>
     </div>
      </section>
+ </section>
     <footer>
         <p>13 de Junio de 2026 | Laiza & David</p>
     </footer>
@@ -189,6 +190,13 @@
         }
         setInterval(updateTimer, 1000);
         updateTimer();
+
+        // Pequeño truco extra: si la URL contiene #rsvp, forzamos el scroll suave
+        window.onload = function() {
+            if(window.location.hash === "#rsvp") {
+                const element = document.getElementById("rsvp");
+                if(element) element.scrollIntoView({behavior: "smooth"});
+            }
         };
     </script>
 </body>
